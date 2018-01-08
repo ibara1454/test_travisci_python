@@ -1,0 +1,42 @@
+language: python
+python:
+  - "3.5"
+  - "3.6"
+
+os: linux
+dist: trusty
+sudo: required
+
+git:
+  depth: 3
+
+matrix:
+  include:
+    - python: "3.5"
+      env: MPI=mpich PY=3
+    - python: "3.5"
+      env: MPI=openmpi PY=3
+    - python: "3.6"
+      env: MPI=mpich PY=3
+    - python: "3.6"
+      env: MPI=openmpi PY=3
+
+before_install:
+  - ./conf/ci/travis-ci/install-mpi.sh $MPI
+  # - python$PY -m pip install Cython
+  - python$PY --version
+  # - python$PY -m cython --version
+  # - python$PY -c "import numpy;print(numpy.__version__)"
+  - if [[ "$MPI" == "mpich"   ]]; then mpichversion; fi
+  - if [[ "$MPI" == "openmpi" ]]; then ompi_info;    fi
+
+install:
+  - python$PY -m pip -vvv install .
+
+before_script:
+  - if [[ "$MPI" == "mpich" ]]; then P=2; else P=5; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]];  then P=2; fi
+
+script:
+  - mpiexec -n 1 python$PY runtests.py -v
+  - mpiexec -n $P python$PY $PWD/test/runtests.py -v
