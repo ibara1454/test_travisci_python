@@ -3,23 +3,16 @@ python:
   - "3.5"
   - "3.6"
 
+env:
+  - "MPI=mpich PY=3"
+  - "MPI=openmpi PY=3"
+
 os: linux
 dist: trusty
 sudo: required
 
 git:
   depth: 3
-
-matrix:
-  include:
-    - python: "3.5"
-      env: MPI=mpich PY=3
-    - python: "3.5"
-      env: MPI=openmpi PY=3
-    - python: "3.6"
-      env: MPI=mpich PY=3
-    - python: "3.6"
-      env: MPI=openmpi PY=3
 
 before_install:
   - ./conf/ci/travis-ci/install-mpi.sh $MPI
