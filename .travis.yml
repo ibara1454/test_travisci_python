@@ -38,5 +38,5 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]];  then P=2; fi
 
 script:
-  - mpiexec -n 1 python$PY runtests.py -v
-  - mpiexec -n $P python$PY $PWD/test/runtests.py -v
+  - mpiexec -n 1 python$PY setup.py test -v
+  - mpiexec -n $P python$PY setup.py test -v
