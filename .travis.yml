@@ -18,6 +18,10 @@ cache:
   - pip
   - apt
 
+branches:
+  only:
+    - master
+
 before_install:
   - ./conf/ci/travis-ci/install-mpi.sh $MPI
   # - python$PY -m pip install Cython
