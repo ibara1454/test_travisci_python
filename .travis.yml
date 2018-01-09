@@ -25,7 +25,8 @@ branches:
     - master
 
 before_install:
-  - ./conf/ci/travis-ci/install-mpi.sh $MPI
+  - ./conf/install-mpi.sh $MPI
+  - ./conf/install-blas.sh
   - python -m pip install cython
   - python$PY --version
   # - python -c "import numpy;print(numpy.__version__)"
