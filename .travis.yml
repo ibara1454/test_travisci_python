@@ -4,8 +4,6 @@ python:
   - "3.6"
 
 env:
-  global:
-    - "PYTHONUSERBASE=.cache/"
   matrix:
     # - "MPI=mpich PY=3"
     - "MPI=openmpi PY=3"
@@ -21,7 +19,9 @@ cache:
   pip: true
   apt: true
   directories:
-    - .cache
+    - ${HOME}/cache
+    # Cache scipy in current directory to avoid build from source
+    - scipy
 
 branches:
   only:
@@ -38,8 +38,9 @@ before_install:
 
 install:
   - python$PY -m pip install .
-  - ./conf/git-clone-if-not-exist.sh https://github.com/scipy/scipy.git .cache/scipy
-  - python$PY -m pip install -q --target=".cache" .cache/scipy
+  - ./conf/git-clone-if-not-exist.sh https://github.com/scipy/scipy.git ${HOME}/cache/scipy
+  # Build scipy from source
+  - travis_wait 30 python$PY -m pip install -q --target="." ${HOME}/cache/scipy
 
 before_script:
   - if [[ "$MPI" == "mpich" ]]; then P=2; else P=5; fi
