@@ -8,3 +8,7 @@ def bar():
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     return rank
+
+
+def ooo():
+    pass
