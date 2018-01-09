@@ -15,8 +15,8 @@ git:
   depth: 3
 
 cache:
-  - pip
-  - apt
+  pip: true
+  apt: true
   directories:
     - .cache
 
